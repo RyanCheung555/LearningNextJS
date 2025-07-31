@@ -23,7 +23,7 @@ const Calculator = () => {
                     className = {`
                         p-4 rounded-lg text-white text-xl
                         ${label === '0' ? 'col-span-2' : ''}
-                        ${['+', '-', '*', '/', '='].includes(label) ? 'bg-orange-500' : 'bg-gray-600'} hover:bg-opacity-80
+                        ${['+', '-', '*', '/', '='].includes(label) ? 'bg-orange-500 hover:bg-orange-600' : 'bg-gray-600 hover:bg-gray-700'} 
                         `}
                     >
                         {label}
