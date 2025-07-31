@@ -11,14 +11,69 @@ const Calculator = () => {
   ];
 
     const [displayValue, setDisplayValue] = useState('0');
+    const [previousValue, setPreviousValue] = useState<number | null>(null);
+    const [operator, setOperator] = useState<string | null>(null);
+    const [waitingForNewOperand, setWaitingForNewOperand] = useState(false);
 
     const handleButtonClick = (value: string) => {
+        if(value === 'AC'){
+            setDisplayValue('0');
+            setPreviousValue(null);
+            setOperator(null);
+            setWaitingForNewOperand(false);
+            return;
+        }
+        if(['+', '-', '*', '/'].includes(value)){
+            setPreviousValue(Number(displayValue));
+            setOperator(value);
+            setWaitingForNewOperand(true);
+            return;
+        }
+        if(value === '='){
+            if (operator && previousValue !== null) {
+                const currentValue = Number(displayValue);
+                let result = 0;
+                
+                switch (operator) {
+                    case '+':
+                        result = previousValue + currentValue;
+                        break;
+                    case '-':
+                        result = previousValue - currentValue;
+                        break;
+                    case '*':
+                        result = previousValue * currentValue;
+                        break;
+                    case '/':
+                        result = previousValue / currentValue;
+                        break;
+                }                            
+                setDisplayValue(String(result));
+                setPreviousValue(null);
+                setOperator(null);
+                setWaitingForNewOperand(true);
+                return;
+            }
+        }
+        if(['+', '-', '*', '/'].includes(value)){
+            setPreviousValue(Number(displayValue));
+            setOperator(value);
+            setWaitingForNewOperand(true);
+            return;
+        }
+        if(value === '='){
+            setDisplayValue(previousValue += Number(displayValue));
+            setPreviousValue(null);
+            setOperator(null);
+            setWaitingForNewOperand(false);
+        }
         if (!isNaN(Number(value)) || value === '.'){
-            if (displayValue === '0' && value !== '.'){
+            if (waitingForNewOperand) {
                 setDisplayValue(value);
+                setWaitingForNewOperand(false);
             }
             else {
-                setDisplayValue(displayValue + value);
+                setDisplayValue(displayValue === '0' && displayValue !== '.' ? value : displayValue + value);
             }
         }
     };
