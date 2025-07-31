@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 const Calculator = () => {
 
     const buttonLabels = [
@@ -8,11 +10,24 @@ const Calculator = () => {
     '0', '.', '='
   ];
 
+    const [displayValue, setDisplayValue] = useState('0');
+
+    const handleButtonClick = (value: string) => {
+        if (!isNaN(Number(value)) || value === '.'){
+            if (displayValue === '0' && value !== '.'){
+                setDisplayValue(value);
+            }
+            else {
+                setDisplayValue(displayValue + value);
+            }
+        }
+    };
+
     return (
         <div className = "max-w-ws mx-auto mt-10 bg-black rounded-lg p-2 shadow-lg">
             {/* Display Screen */}
             <div className = "bg-gray-800 text-white p-4 rounded-lg text-right text-3xl mb-2">
-
+                {displayValue}
             </div>
 
             {/* Button Grid */}
@@ -20,6 +35,7 @@ const Calculator = () => {
                 {buttonLabels.map((label) => (
                     <button
                     key = {label}
+                    onClick={() => handleButtonClick(label)}
                     className = {`
                         p-4 rounded-lg text-white text-xl
                         ${label === '0' ? 'col-span-2' : ''}
