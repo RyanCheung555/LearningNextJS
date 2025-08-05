@@ -61,19 +61,13 @@ const Calculator = () => {
             setWaitingForNewOperand(true);
             return;
         }
-        if(value === '='){
-            setDisplayValue(previousValue += Number(displayValue));
-            setPreviousValue(null);
-            setOperator(null);
-            setWaitingForNewOperand(false);
-        }
         if (!isNaN(Number(value)) || value === '.'){
             if (waitingForNewOperand) {
                 setDisplayValue(value);
                 setWaitingForNewOperand(false);
             }
             else {
-                setDisplayValue(displayValue === '0' && displayValue !== '.' ? value : displayValue + value);
+                setDisplayValue(displayValue === '0' && value !== '.' ? value : displayValue + value);
             }
         }
     };
